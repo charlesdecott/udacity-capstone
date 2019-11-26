@@ -28,6 +28,11 @@ Parameters:
     Type: String
     Default: 192.168.192.0/18
     Description: CidrBlock for private subnet 02 within the VPC
+  
+  EKSClusterName:
+    Type: String
+    Default: test
+    Description: Name of EKS cluster 
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -261,6 +266,21 @@ Resources:
     Properties:
       GroupDescription: Cluster communication with worker nodes
       VpcId: !Ref VPC
+  EksControlPlane:
+    Type: AWS::EKS::Cluster
+    Properties: 
+      Name: 
+        Ref: EKSClusterName
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - !Ref ControlPlaneSecurityGroup
+        SubnetIds:
+          - !Ref PublicSubnet01
+          - !Ref PublicSubnet02
+          - !Ref PublicSubnet01
+          - !Ref PublicSubnet01
+      RoleArn: 'arn:aws:iam::595702470973:role/eksServiceRole'
+      Version: '1.14'
   
 
 
