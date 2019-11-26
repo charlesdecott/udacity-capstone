@@ -19,6 +19,15 @@ pipeline {
 
 
                     }
+        },
+            stage('Build docker image') {
+                    steps {
+
+                        sh 'docker build --tag=nannabat/publicyard:testUdacitycapstone .'
+
+
+
+                    }
         }
     }
 }
