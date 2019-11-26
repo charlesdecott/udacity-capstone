@@ -19,11 +19,11 @@ pipeline {
 
 
                     }
-        },
+        }
             stage('Build docker image') {
                     steps {
 
-                        sh 'echo "Just testing"'
+                        sh 'docker build --tag=nannabat/publicyard:udacityTestCapstone .'
 
 
 
