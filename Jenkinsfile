@@ -14,7 +14,7 @@ pipeline {
             stage('Lint Dockerfile') {
                     steps {
 
-                        sh 'hadolint disable=DL3006,SC2028,DL3008,DL3015 Dockerfile'
+                        sh 'hadolint --ignore DL3006 --ignore SC2028 --ignore DL3008 --ignore DL3015 Dockerfile'
 
 
 
