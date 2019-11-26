@@ -23,11 +23,14 @@ pipeline {
             stage('Build docker image') {
                     steps {
 
+                        withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                         sh 'docker build --tag=nannabat/publicyard:udacityTestCapstone .'
 
 
 
                     }
+        }
         }
     }
 }
