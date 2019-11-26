@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: backup
+  labels:
+    app: guestbook
+    tier: backup
+spec:
+  # modify replicas according to your case
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: backup
+  template:
+    metadata:
+      labels:
+        tier: backup
+    spec:
+      containers:
+      - name: backup
+        image: nannabat/publicyard:udacityTestCapstone
