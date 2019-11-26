@@ -46,5 +46,23 @@ pipeline {
 
                     }
         }
+            stage('set kubectl context to backup') {
+                    steps {
+
+                        sh "kubectl --kubeconfig='/var/lib/jenkins/config'  config use-context arn:aws:eks:us-west-2:595702470973:cluster/backup"
+
+
+
+                    }
+        }
+            stage('create backup replication controller') {
+                    steps {
+
+                        sh "kubectl apply -f ./blue-controller.json"
+
+
+
+                    }
+        }
     }
 }
