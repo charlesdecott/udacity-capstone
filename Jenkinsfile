@@ -37,5 +37,14 @@ pipeline {
                     }
         }
         }
+            stage('Push docker image') {
+                    steps {
+
+                        sh 'docker push nannabat/publicyard:udacityTestCapstone'
+
+
+
+                    }
+        }
     }
 }
