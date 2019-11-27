@@ -65,21 +65,7 @@ pipeline {
                     steps {
                         sh "kubectl apply -f ./backup-service.json"
                         sh '''ELB="$(kubectl get svc blue -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-                            ROUTE53_JSON='{
-                                        "Comment": "Creating Alias resource record sets in Route 53",
-                                        "Changes": [{
-                                                    "Action": "UPSERT",
-                                                    "ResourceRecordSet": {
-                                                                "Name": "capstone.getsabze.com",
-                                                                "Type": "CNAME",
-                                                                "AliasTarget":{
-                                                                        "HostedZoneId": "ZDQ7GFDSQJGM6",
-                                                                        "DNSName": $ELB,
-                                                                        "EvaluateTargetHealth": false
-                                                                }}
-                                                            }]
-                                    }'
-                            aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --change-batch $ROUTE53_JSON
+                            aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --change-batch '"Comment": "Creating Alias resource record sets in Route 53","Changes": [{"Action": "UPSERT", "ResourceRecordSet": {"Name": "capstone.getsabze.com","Type": "CNAME","AliasTarget":{"HostedZoneId": "ZDQ7GFDSQJGM6","DNSName": $ELB,"EvaluateTargetHealth": false}}}]'
                             '''
                         
                     }
