@@ -79,7 +79,7 @@ pipeline {
                                                                 }}
                                                             }]
                                     }'
-                            aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --cli-input-json $ROUTE53_JSON
+                            aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --change-batch $ROUTE53_JSON
                             '''
                         
                     }
