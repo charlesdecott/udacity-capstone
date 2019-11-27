@@ -65,11 +65,7 @@ pipeline {
                     steps {
                         sh "kubectl apply -f ./backup-service.json"
                         sh '''ELB="$(kubectl get svc blue -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-                              aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 
-                                --change-batch '{ "Comment": "creating a record set", 
-                                "Changes": [ { "Action": "UPSERT", "ResourceRecordSet": { "Name": 
-                                "capstone.getsabze.com", "Type": "CNAME", "TTL": 
-                                120, "ResourceRecords": [ { "Value": "'"$ELB"'" } ] } } ] }'
+                              aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --change-batch '{ "Comment": "creating a record set",  "Changes": [ { "Action": "UPSERT", "ResourceRecordSet": { "Name": "capstone.getsabze.com", "Type": "CNAME", "TTL": 120, "ResourceRecords": [ { "Value": "'"$ELB"'" } ] } } ] }'
                             '''
                         
                     }
