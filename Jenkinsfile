@@ -64,8 +64,7 @@ pipeline {
              stage('Routing traffic to backup') {
                     steps {
                         sh "kubectl apply -f ./backup-service.json"
-                        sh  "
-                            ELB = kubectl get svc blue -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+                        sh '''ELB = kubectl get svc blue -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
                             ROUTE53_JSON = 
                             '{
                                         \"Comment\": \"Creating Alias resource record sets in Route 53\",
@@ -82,7 +81,7 @@ pipeline {
                                                             }]
                                     }'
                             aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --cli-input-json $ROUTE53_JSON
-                            "
+                            '''
                         
                     }
         }
