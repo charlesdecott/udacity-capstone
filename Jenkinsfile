@@ -58,7 +58,7 @@ pipeline {
             stage('create backup replication controller') {
                     steps {
 
-                        sh "kubectl apply -f ./backup-controller.yml"
+                        sh "kubectl apply -f ./backup-controller.json"
 
 
 
