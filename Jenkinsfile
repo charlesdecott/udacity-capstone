@@ -56,6 +56,11 @@ pipeline {
 
                     }
         }
+            stage('Route traffic to backup') {
+                    steps {
+                        input "Does the new version looks good?"
+                    }
+        }
             stage('set prod cluster') {
                     steps {
                         sh "kubectl config use-context arn:aws:eks:us-west-2:595702470973:cluster/prod"
