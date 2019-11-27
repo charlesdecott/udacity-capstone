@@ -49,7 +49,7 @@ pipeline {
             stage('set backup cluster') {
                     steps {
 
-                        sh "kubectl --kubeconfig='/var/lib/jenkins/config'  config use-context arn:aws:eks:us-west-2:595702470973:cluster/backup"
+                        sh "kubectl config use-context arn:aws:eks:us-west-2:595702470973:cluster/backup"
                         sh "kubectl apply -f ./backup-controller.json"
 
 
@@ -58,7 +58,7 @@ pipeline {
         }
             stage('set prod cluster') {
                     steps {
-                        sh "kubectl --kubeconfig='/var/lib/jenkins/config'  config use-context arn:aws:eks:us-west-2:595702470973:cluster/prod"
+                        sh "kubectl config use-context arn:aws:eks:us-west-2:595702470973:cluster/prod"
                         sh "kubectl apply -f ./prod-controller.json"
 
 
