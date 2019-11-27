@@ -46,7 +46,7 @@ pipeline {
 
                     }
         }
-            stage('set backup cluster') {
+            stage('Deploy new code on to backup cluster') {
                     steps {
 
                         sh "kubectl config use-context arn:aws:eks:us-west-2:595702470973:cluster/backup"
@@ -56,9 +56,34 @@ pipeline {
 
                     }
         }
-            stage('Route traffic to backup') {
+            stage('Approval to route traffic to backup') {
                     steps {
                         input "Does the new version looks good?"
+                    }
+        }
+             stage('Routing traffic to backup') {
+                    steps {
+                        sh "kubectl apply -f ./backup-service.json"
+                        sh  "
+                            ELB = kubectl get svc blue -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+                            ROUTE53_JSON = 
+                            '{
+                                        \"Comment\": \"Creating Alias resource record sets in Route 53\",
+                                        \"Changes\": [{
+                                                    \"Action\": \"UPSERT\",
+                                                    \"ResourceRecordSet\": {
+                                                                \"Name\": \"capstone.getsabze.com\",
+                                                                \"Type\": \"CNAME\",
+                                                                \"AliasTarget\":{
+                                                                        \"HostedZoneId\": \"ZDQ7GFDSQJGM6\",
+                                                                        \"DNSName\": $ELB,
+                                                                        \"EvaluateTargetHealth\": false
+                                                                }}
+                                                            }]
+                                    }'
+                            aws route53 change-resource-record-sets --hosted-zone-id ZDQ7GFDSQJGM6 --cli-input-json $ROUTE53_JSON
+                            "
+                        
                     }
         }
             stage('set prod cluster') {
